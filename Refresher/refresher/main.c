@@ -12,10 +12,11 @@ int main(){
 	insertFront(&node, 2);
 	insertFront(&node, 3);
 	insertRear(&node, 10);
-
+	
 	display(node);
 	printf("\n");
 	insertInto(&node, 5555, 2);
+	insertSorted(&node, 1);
 	display(node);
 	
 	printf("\n\nDelete: \n");

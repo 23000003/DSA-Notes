@@ -51,14 +51,35 @@ void insertInto(Doubly *node, int val, int into){ // not yet
 	Doubly *trav = NULL;
 	int i;
 	
-	for(i = 0, trav = node; (*trav)->next != NULL && i < into - 1; trav = &(*trav)->next, i++){}
-	temp->next = (*trav)->next;
-	temp->prev = *trav;
-	(*trav)->next->prev = temp;
-	(*trav)->next = temp; 
+	for(i = 0, trav = node; (*trav)->next != NULL && i < into; trav = &(*trav)->next, i++){}
+	(*trav)->prev = temp;
+	temp->next = *trav;
+	*trav = temp;
 }
 
 void insertSorted(Doubly *node, int val){
+	
+	Doubly temp = NULL;
+	createNode(&temp, val);
+	
+	Doubly *trav;
+	int identifier = 0;
+	
+	for(trav = node, identifier; (*trav)->next != NULL && (*trav)->val < val; trav = &(*trav)->next, identifier++){}
+		
+		
+//	if(identifier == 0){
+		(*trav)->prev = temp;
+		temp->next = *trav;
+		*trav = temp;
+//	}else{
+//		temp->next = (*trav)->next;
+//		temp->prev = *trav;
+//		(*trav)->next->prev = temp;
+//		(*trav)->next = temp; 
+//	}
+	
+	
 	
 }
 
