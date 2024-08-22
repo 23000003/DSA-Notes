@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o Doubly.o
-LINKOBJ  = main.o Doubly.o
+OBJ      = main.o Doubly.o staticarray.o dynamicarray.o Singly.o
+LINKOBJ  = main.o Doubly.o staticarray.o dynamicarray.o Singly.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -29,3 +29,12 @@ main.o: main.c
 
 Doubly.o: Doubly.c
 	$(CC) -c Doubly.c -o Doubly.o $(CFLAGS)
+
+staticarray.o: staticarray.c
+	$(CC) -c staticarray.c -o staticarray.o $(CFLAGS)
+
+dynamicarray.o: dynamicarray.c
+	$(CC) -c dynamicarray.c -o dynamicarray.o $(CFLAGS)
+
+Singly.o: Singly.c
+	$(CC) -c Singly.c -o Singly.o $(CFLAGS)

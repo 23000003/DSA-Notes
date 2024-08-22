@@ -7,17 +7,17 @@ typedef struct node{
 	struct node *prev;
 }*Doubly;
 
-void display(Doubly node);
+void display(Doubly node, Doubly tail);
 void createNode(Doubly *node, int val);
-void insertFront(Doubly *node, int val);
-void insertRear(Doubly *node, int val);
-void insertInto(Doubly *node, int val, int into);
-void insertSorted(Doubly *node, int val);
+void insertFront(Doubly *node, Doubly *tail, int val);
+void insertRear(Doubly *node, Doubly *tail, int val);
+void insertInto(Doubly *node, Doubly *tail, int val, int into);
+void insertSorted(Doubly *node, Doubly *tail, int val);
 
-void deleteFront(Doubly *node);
-void deleteRear(Doubly *node);
-void deleteItem(Doubly *node, int item);
-void deleteLocation(Doubly *node, int location);
-void deleteOccurence(Doubly *node);
+bool deleteFront(Doubly *node);
+bool deleteRear(Doubly *tail);
+bool deleteItem(Doubly *node, Doubly *tail, int item);
+bool deleteLocation(Doubly *node, Doubly *tail, int location);
+bool deleteOccurence(Doubly *node, Doubly *tail, int occu);
 
 #endif
