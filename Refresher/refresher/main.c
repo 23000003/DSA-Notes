@@ -16,37 +16,40 @@ int main(){
 //	insertFront(&node, &tail, 1);
 //	insertRear(&node, &tail, 10);
 //	display(node, tail);
-//	insertInto(&node,&tail, 5555, 2);
+//	insertInto(&node,&tail, 555, 2);
 //	display(node, tail);
-//	insertSorted(&node, 4);
-//	display(node);
-	
+//	insertSorted(&node,&tail, 1000);
+//	insertRear(&node, &tail, 555);
+//	insertFront(&node, &tail, 5);
+//	display(node, tail);
+//
 //	printf("\n\nDelete: \n");
-//	(deleteFront(&node)) ? display(node) : printf("Empty LL");
-//	(deleteRear(&node)) ? display(node) : printf("Empty LL");
-	
-	
+//	(deleteFront(&node, &tail)) ? display(node, tail) : printf("Empty LL");
+//	(deleteRear(&tail, &node)) ? display(node, tail) : printf("Empty LL");
+//	(deleteItem(&node, &tail, 10)) ? display(node, tail) : printf("Empty LL or Item Not Found");
+//	(deleteLocation(&node, &tail, 3)) ? display(node, tail) : printf("Empty LL or Item Not Found");
+//	(deleteOccurence(&node, &tail, 555)) ? display(node, tail) : printf("Empty LL or Item Not Found");
 // ===================== SINGLY LINKED LIST ======================
 
-	Singly node = NULL;
-
-	insertSinglyFront(&node, 5);
-	insertSinglyFront(&node, 2);
-	insertSinglyFront(&node, 7);
-	insertSinglyFront(&node, 5);
-	insertSinglyFront(&node, 5);
-	insertSinglyFront(&node, 5);
-	insertSinglyRear(&node, 50);
-	displaySingly(node);
-	(insertSinglyInto(&node, 20, 2)) ? displaySingly(node) : printf("\nInsert Into Exceeds");
-	insertSinglySorted(&node, 70);
-	displaySingly(node);
-	
-	printf("\n\nDelete:\n");
-	(deleteSinglyFront(&node)) ? displaySingly(node) : printf("\nList is empty\n");
-	(deleteSinglyRear(&node)) ? displaySingly(node) : printf("\nList is empty\n");
-	(deleteSinglyItem(&node, 50)) ? displaySingly(node) : printf("\nItem doesnt exist or List is Empty");
-	(deleteSinglyOccurence(&node, 5)) ? displaySingly(node) : printf("\nList is empty");
+//	Singly node = NULL;
+//
+//	insertSinglyFront(&node, 5);
+//	insertSinglyFront(&node, 2);
+//	insertSinglyFront(&node, 7);
+//	insertSinglyFront(&node, 5);
+//	insertSinglyFront(&node, 5);
+//	insertSinglyFront(&node, 5);
+//	insertSinglyRear(&node, 50);
+//	displaySingly(node);
+//	(insertSinglyInto(&node, 20, 2)) ? displaySingly(node) : printf("\nInsert Into Exceeds");
+//	insertSinglySorted(&node, 70);
+//	displaySingly(node);
+//	
+//	printf("\n\nDelete:\n");
+//	(deleteSinglyFront(&node)) ? displaySingly(node) : printf("\nList is empty\n");
+//	(deleteSinglyRear(&node)) ? displaySingly(node) : printf("\nList is empty\n");
+//	(deleteSinglyItem(&node, 50)) ? displaySingly(node) : printf("\nItem doesnt exist or List is Empty");
+//	(deleteSinglyOccurence(&node, 5)) ? displaySingly(node) : printf("\nList is empty");
 	
 // ================ Static Array ============= //
 

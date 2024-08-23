@@ -47,13 +47,10 @@ void insertRear(Doubly *node, Doubly *tail, int val){
 
 
 void insertInto(Doubly *node, Doubly *tail, int val, int into) {
-    Doubly temp = NULL;
+    
+	Doubly temp = NULL;
     createNode(&temp, val);
 
-    if (temp == NULL) {
-        // Handle memory allocation failure
-        return;
-    }
 
     // If inserting at the head of the list (into == 0)
     if (into == 0) {
@@ -68,7 +65,10 @@ void insertInto(Doubly *node, Doubly *tail, int val, int into) {
         return;
     }
 
-    // Traverse to the correct position
+	if (temp == NULL) {
+        return;
+    }
+
     Doubly *trav = node;
     int i;
     for (i = 0; i < into - 1 && *trav != NULL; i++, trav = &(*trav)->next) {}
@@ -112,54 +112,148 @@ void insertSorted(Doubly *node, Doubly *tail, int val){
 	}else{
 		temp->next = (*trav)->next;
 		temp->prev = *trav;
-		(*trav)->next->prev = temp;
+		if((*trav)->next != NULL){
+			(*trav)->next->prev = temp;
+		}else{
+			*tail = temp;
+		}
 		(*trav)->next = temp; 
 	}
 	
 }
 
-bool deleteFront(Doubly *node){ 
+bool deleteFront(Doubly *node, Doubly *tail){ 
 	
 	if(*node == NULL) return false;
 	
 	Doubly del = *node;
 	*node = (*node)->next;
-	(*node)->prev = NULL;
+	
+	if(*node == NULL){
+		*tail = NULL;
+	}else{
+		(*node)->prev = NULL;	
+	}
+	
 	free(del);
 	
 	return true;
 }
 
-bool deleteRear(Doubly *tail){ 
+bool deleteRear(Doubly *tail, Doubly *node){ 
 	
 	if(*tail == NULL) return false;
 	
-//	Doubly *trav = NULL;
-//	
-//	for(trav = node; (*trav)->next != NULL; trav = &(*trav)->next){}
-//	
-//	Doubly del = *trav;
-//	*trav = NULL;
-//	free(del);
-//	
+	Doubly del = *tail;
+	*tail = (*tail)->prev;
+	
+	if(*tail == NULL){
+		*node = NULL;
+	}else{
+		(*tail)->next = NULL;
+	}
+	
+	free(del);
+
 	return true;
 }
 
 bool deleteItem(Doubly *node, Doubly *tail, int item){
 	
+	if(*node == NULL) return false;
+
+	if((*node)->val == item){
+		Doubly del = *node;
+		*node = (*node)->next;
+		(*node)->prev = NULL;
+		free(del);
+		return true;
+	}
+
+	Doubly *trav;
+	
+	for(trav = node; *trav != NULL && (*trav)->val != item; trav = &(*trav)->next){}
+	
+	if(*trav == NULL) return false;
+	
+	Doubly del = *trav;
+	
+	if((*trav)->next == NULL){
+		*tail = (*tail)->prev;
+		(*tail)->next = NULL;
+	}else{
+		(*trav)->next->prev = (*trav)->prev;
+		*trav = (*trav)->next;
+	}
+	
+	free(del);
+	return true;
 }
 
 bool deleteLocation(Doubly *node, Doubly *tail, int location){
+	
+	if(*node == NULL) return false;
+
+	if(location == 0){
+		Doubly del = *node;
+		*node = (*node)->next;
+		(*node)->prev = NULL;
+		free(del);
+		return true;
+	}
+
+	Doubly *trav;
+	int i;
+	for(trav = node, i = 0; *trav != NULL && i != location; trav = &(*trav)->next, i++){}
+	
+	if(*trav == NULL) return false;
+	
+	Doubly del = *trav;
+	
+	if((*trav)->next == NULL){
+		*tail = (*tail)->prev;
+		(*tail)->next = NULL;
+	}else{
+		(*trav)->next->prev = (*trav)->prev;
+		*trav = (*trav)->next;
+	}
+	
+	free(del);
+	return true;
 	
 }
 
 bool deleteOccurence(Doubly *node, Doubly *tail, int occu){
 	
+	if(*node == NULL || (*node)->next == NULL) return false;
+
+	Doubly *trav = node;
+	int identify = 0;
+	
+	while(*trav != NULL){
+		
+		if((*trav)->val == occu){
+			Doubly del = *trav;
+			if((*trav)->next != NULL){
+				(*trav)->next->prev = (*trav)->prev;
+			}else{
+				*tail = (*tail)->prev;
+			}
+			*trav = (*trav)->next;
+			free(del);
+			identify = 1;
+		}else{
+			trav = &(*trav)->next;
+		}
+		
+	}
+	
+	return identify == 1;
 }
 
 void display(Doubly node, Doubly tail){
 	
-	printf("Next: ");
+	printf("Front: ");
     while(node != NULL){
         printf("%d ", node->val);
         node = node->next;

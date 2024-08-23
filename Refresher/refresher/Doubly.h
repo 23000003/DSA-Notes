@@ -14,8 +14,8 @@ void insertRear(Doubly *node, Doubly *tail, int val);
 void insertInto(Doubly *node, Doubly *tail, int val, int into);
 void insertSorted(Doubly *node, Doubly *tail, int val);
 
-bool deleteFront(Doubly *node);
-bool deleteRear(Doubly *tail);
+bool deleteFront(Doubly *node, Doubly *tail);
+bool deleteRear(Doubly *tail, Doubly *node);
 bool deleteItem(Doubly *node, Doubly *tail, int item);
 bool deleteLocation(Doubly *node, Doubly *tail, int location);
 bool deleteOccurence(Doubly *node, Doubly *tail, int occu);
