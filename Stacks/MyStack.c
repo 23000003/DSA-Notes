@@ -83,21 +83,21 @@ Stack removeEven(Stack *s){;
 	Stack temp = createStack();
 	
 	while(!isEmpty(*s)){
-		if(peek(*s) % 2 == 0){
-			push(&newEven, peek(*s));
-//			printf("%d neWEnve\n", newEven.elems[newEven.count]);	
-		}else{
-			push(&temp, peek(*s));
-//			printf("%d temp\n", temp.elems[temp.count]);	
-		}
+		
+		(peek(*s) % 2 == 0) ? push(&newEven, peek(*s)) : push(&temp, peek(*s));
+//		if(peek(*s) % 2 == 0){
+//			push(&newEven, peek(*s));
+//		}else{
+//			push(&temp, peek(*s));
+//		}
 		pop(s);
-		printf("%d s\n", s->count);
 	}
 	
-//	while(!isEmpty(temp)){
-//		push(s, peek(temp));
-//	}
-//	
+	while(!isEmpty(temp)){
+		push(s, peek(temp));
+		pop(&temp);
+	}
+	
 	return newEven;
 }
 
