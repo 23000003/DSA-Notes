@@ -16,17 +16,18 @@ int main(){
 	(enqueue(&myQ, createData(7542134, createName("LWAO", "way"), "BSIS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	(enqueue(&myQ, createData(6455324, createName("<WADO", "hrwa"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	(enqueue(&myQ, createData(4213435, createName("TWAE", "Hdwad"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	visualize(myQ);
-	
-	
-	Name *studs = getStudent(myQ, " ", 'F');
-	int i = 0;
-	printf("======== GetStudent ==========\n");
-	for(i = 0; strcmp(studs[i].fname, " ") != 0; i++){
-		printf("Full name: %s %s\n", studs[i].fname, studs[i].lname);
-	}
 	
 	visualize(myQ);
+	(insertSorted(&myQ, createData(123456, createName("Check", "ZAImmm"), "BSCE", 'F'))) ? visualize(myQ) : printf("Failed");
+	
+//	Name *studs = getStudent(myQ, " ", 'F');
+//	int i = 0;
+//	printf("======== GetStudent ==========\n");
+//	for(i = 0; strcmp(studs[i].fname, " ") != 0; i++){
+//		printf("Full name: %s %s\n", studs[i].fname, studs[i].lname);
+//	}
+//	
+//	visualize(myQ);
 
 }
 
@@ -105,8 +106,8 @@ void display(Queue q){ // dont traverse,
 void visualize(Queue q){
 	
 	NodePtr trav = q.head;
+	printf("======== Students ==========\n");
 	while(trav != NULL){
-		printf("======== Student 1 ==========\n\n");
 		printf("Student ID: %d\n", trav->elem.studID);
 		printf("Full name: %s %s\n", trav->elem.studName.fname, trav->elem.studName.lname);
 		printf("Program: %s\n", trav->elem.program);
@@ -145,7 +146,7 @@ Name *getStudent(Queue q, char *program, char sex){
 			}
 			dequeue(&q);
 		}
-	}else if(strcmp(sex, ' ') == 0){
+	}else if(sex == ' '){
 		while(q.head != NULL){
 			if(strcmp(q.head->elem.program, program) == 0){
 				studs[i] = q.head->elem.studName;	
@@ -172,9 +173,23 @@ Name *getStudent(Queue q, char *program, char sex){
 // insert the Data d based on lastname only 
 bool insertSorted(Queue *q, Data d){
 	
-//	NodePtr 
-//	while(q.head != NULL){
-//		
-//	}
+	Queue temp = createQueue();
+	int compareStopper = 0;
+	//compare stopper to stop the inserting when condition is true;
+	while(q->head != NULL){
+		if(strcmp(q->head->elem.studName.lname, d.studName.lname) > 0 && compareStopper == 0){
+			enqueue(&temp, d);
+			compareStopper = 1;	
+		}else{
+			enqueue(&temp, q->head->elem);
+		}
+		dequeue(q);
+	}
+	
+	while(temp.head != NULL){
+		enqueue(q, temp.head->elem);
+		dequeue(&temp);
+	}
+	
+	return true;
 }
-
