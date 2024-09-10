@@ -11,7 +11,7 @@ int main(){
 	(enqueue(&myQ, createData(23000003, createName("Kenny", "Maratas"), "BSIT", 'M'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	(enqueue(&myQ, createData(32167867, createName("Joe", "Harry"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	visualize(myQ);
-	(dequeue(&myQ)) ? printf("\n\nSuccess\n\n") : printf("Empty");
+//	(dequeue(&myQ)) ? printf("\n\nSuccess\n\n") : printf("Empty");
 	(enqueue(&myQ, createData(5436547, createName("WAWA", "Rry"), "BSCS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	(enqueue(&myQ, createData(7542134, createName("LWAO", "way"), "BSIS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	(enqueue(&myQ, createData(6455324, createName("<WADO", "hrwa"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
@@ -20,14 +20,14 @@ int main(){
 	visualize(myQ);
 	(insertSorted(&myQ, createData(123456, createName("Check", "ZAImmm"), "BSCE", 'F'))) ? visualize(myQ) : printf("Failed");
 	
-//	Name *studs = getStudent(myQ, " ", 'F');
-//	int i = 0;
-//	printf("======== GetStudent ==========\n");
-//	for(i = 0; strcmp(studs[i].fname, " ") != 0; i++){
-//		printf("Full name: %s %s\n", studs[i].fname, studs[i].lname);
-//	}
-//	
-//	visualize(myQ);
+	Name *studs = getStudent(myQ, " ", 'F');
+	int i = 0;
+	printf("======== GetStudent ==========\n");
+	for(i = 0; strcmp(studs[i].fname, " ") != 0; i++){
+		printf("Full name: %s %s\n", studs[i].fname, studs[i].lname);
+	}
+	
+	visualize(myQ);
 
 }
 
@@ -132,35 +132,42 @@ void visualize(Queue q){
 // If program is an empty string then use all programs, if sexx is an empty character then get both sex
 // use the concept of adding an empty string values for the name to use as a terminator for the name array
 // create a duplicate queue function
+
+Queue createDuplicateQueue(Queue q){
+	Queue myDupli = q;
+	return myDupli;
+}
+
+
 Name *getStudent(Queue q, char *program, char sex){
 	
-	NodePtr temp; // save the queue
+	Queue myDupli = q; // save the queue
 	Name *studs = malloc(sizeof(Name) * 20);
 	int i = 0;
 	
 	if(strcmp(program, " ") == 0){
-		while(q.head != NULL){
-			if(q.head->elem.sex == sex){
-				studs[i] = q.head->elem.studName;	
+		while(myDupli.head != NULL){
+			if(myDupli.head->elem.sex == sex){
+				studs[i] = myDupli.head->elem.studName;	
 				i++;
 			}
-			dequeue(&q);
+			dequeue(&myDupli);
 		}
 	}else if(sex == ' '){
-		while(q.head != NULL){
-			if(strcmp(q.head->elem.program, program) == 0){
-				studs[i] = q.head->elem.studName;	
+		while(myDupli.head != NULL){
+			if(strcmp(myDupli.head->elem.program, program) == 0){
+				studs[i] = myDupli.head->elem.studName;	
 				i++;
 			}
-			dequeue(&q);
+			dequeue(&myDupli);
 		}
 	}else{
-		while(q.head != NULL){
-			if(strcmp(q.head->elem.program, program) == 0 && q.head->elem.sex == sex){
-				studs[i] = q.head->elem.studName;	
+		while(myDupli.head != NULL){
+			if(strcmp(myDupli.head->elem.program, program) == 0 && myDupli.head->elem.sex == sex){
+				studs[i] = myDupli.head->elem.studName;	
 				i++;
 			}
-			dequeue(&q);
+			dequeue(&myDupli);
 		}
 	}
 
