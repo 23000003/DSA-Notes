@@ -43,7 +43,7 @@ int main(){
 	displayStack(s);
 	
 	printf("==== Sorted Stack: ==== \n");
-	sortStack(&s, 0); //0 desc, 1 asc
+	sortStack(&s, 1); //0 desc, 1 asc
 	displayStack(s);
 	
 	
