@@ -43,7 +43,7 @@ int main(){
 	displayStack(s);
 	
 	printf("==== Sorted Stack: ==== \n");
-	sortStack(&s, 1);
+	sortStack(&s, 0); //0 desc, 1 asc
 	displayStack(s);
 	
 	
@@ -216,56 +216,40 @@ int countStack(Stack s){
 	return x;
 }
 
-// HOW THE FUCK DO I SORT A STACK WITH ONLY 1 STACK
+// HOW THE FUCK DO I SORT A STACK WITH ONLY 1 STACK ( I DID IT !!!!! )
+// stack sorting visualization https://www.youtube.com/watch?v=K0XXVSL4wUo
 
 /*Sort the values based on name. Use flag for ascending 
   or descending. */
 void sortStack(Stack *s, bool flag){
-	//f = desc t = asc
-	// B C A D => stack current value
-	if(isEmpty(*s)) return false;
-	
-	int count = countStack(*s) - 1;
-	
-	if(count == 0){
-		printf("Only 1 value");
-		return false;
-	}
-	
-	Stack store; // stores the sorted values;
-	initStack(&store);
-	
-	
-	Person comp = peek(*s);
-	pop(s);
-	
-	
-	
-	int i, j, k = 0; // k => to decrement the count for inner loop;
-	
-	for(i = 0; i < count; i++){
-		int count2 = count - k;
-		for(j = 0; j < count2; j++){
-			Person p = peek(*s);
 
-			if(strcmp(p.name, comp.name) > 0){
-				comp = p;
-			}else{
-				push(s, p);
-			}
-			pop(s);
-		}
-		push(&store, comp);
-		comp = peek(*s);
-		k++;
-	}
+	Stack temp; 
+	initStack(&temp);
 	
-	while(!isEmpty(store)){
-		push(s, peek(store));
-		pop(&store);
-	}
+    while (!isEmpty(*s)) {
+        Person p = peek(*s);
+        pop(s);
+		
+		// flag condition in the while to avoid infinity loop
+        while (!isEmpty(temp) &&
+               ((flag && strcmp(p.name, temp->data.name) < 0) ||  // Ascending order
+                (!flag && strcmp(p.name,  temp->data.name) > 0))) { // Descending order
+            push(s, peek(temp));
+            pop(&temp);
+        }
+        
+		//if the inner while loop is done means it doesn't have any greater/lesser element then push it to the temp
+        push(&temp, p);
+    }
 	
+	while(!isEmpty(temp)){
+		push(s, peek(temp));
+		pop(&temp);
+	}
+
 }
+
+
 
 
 
