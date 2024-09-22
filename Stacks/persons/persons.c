@@ -33,14 +33,14 @@ int main(){
 	Stack s;
 	initStack(&s);
 	
-	push(&s, createPerson("D", 69, 'F'));
-	push(&s, createPerson("B", 21, 'M'));
-	push(&s, createPerson("A", 15, 'M'));
-	displayStack(s);
+	// push(&s, createPerson("D", 69, 'F'));
+	// push(&s, createPerson("B", 21, 'M'));
+	// push(&s, createPerson("A", 15, 'M'));
+	// displayStack(s);
 	
-	printf("==== InsertSorted 1: ==== \n");
-	insertSorted1(&s, createPerson("B", 52, 'F'));
-	displayStack(s);
+	// printf("==== InsertSorted 1: ==== \n");
+	// insertSorted1(&s, createPerson("B", 52, 'F'));
+	// displayStack(s);
 
 	printf("==== InsertSorted 2: ==== \n");
 	insertSorted1(&s, createPerson("H", 52, 'F'));
@@ -162,7 +162,6 @@ bool insertSorted2(Stack *s, Person p){
 		store = loopTemp;
 	}
 
-	// even if *s is empty this will trigger
 	if(!isEmpty(store)){
 		hold->link = *s;
 		*s = hold;
