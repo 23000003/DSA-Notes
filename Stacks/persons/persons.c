@@ -34,12 +34,16 @@ int main(){
 	initStack(&s);
 	
 	push(&s, createPerson("D", 69, 'F'));
-	push(&s, createPerson("A", 21, 'M'));
-	push(&s, createPerson("C", 15, 'M'));
+	push(&s, createPerson("B", 21, 'M'));
+	push(&s, createPerson("A", 15, 'M'));
 	displayStack(s);
 	
 	printf("==== InsertSorted 1: ==== \n");
 	insertSorted1(&s, createPerson("B", 52, 'F'));
+	displayStack(s);
+
+	printf("==== InsertSorted 2: ==== \n");
+	insertSorted1(&s, createPerson("H", 52, 'F'));
 	displayStack(s);
 	
 	printf("==== Sorted Stack: ==== \n");
@@ -143,55 +147,36 @@ bool insertSorted1(Stack *s, Person p){
   of the stack but without using push, pop, and peek functions.*/
 bool insertSorted2(Stack *s, Person p){
 
-	if(isEmpty(*s)){
-		Stack tempAssign = malloc(sizeof(NodeType));
-		tempAssign->data = (*s)->data;
-		tempAssign->link = *s;
-		*s = tempAssign;
+	Stack store;
+	initStack(&store);
+
+	//holds the value
+	Stack hold = malloc(sizeof(struct node));
+	hold->data = p;
+	hold->link = NULL;
+
+	while(!isEmpty(*s) && strcmp((*s)->data.name, p.name) < 0){
+		NodePtr loopTemp = *s;
+		*s = (*s)->link;
+		loopTemp->link = store;
+		store = loopTemp;
+	}
+
+	// even if *s is empty this will trigger
+	if(!isEmpty(store)){
+		hold->link = *s;
+		*s = hold;
 		return true;
 	}
-	
-	Stack temp;
-	initStack(&temp);
-	int stopper = 0;
-	
-	while(*s != NULL){
-		Stack tempAssign = malloc(sizeof(NodeType));
-		tempAssign->data = (*s)->data;
-		if(strcmp((*s)->data.name, p.name) > 0 && stopper == 0){
-			Stack found = malloc(sizeof(NodeType));
-			found->data = p;
-			found->link = temp;
-			temp = found;
-			stopper = 1;
-		}
-		
-		tempAssign->link = temp;
-		temp = tempAssign;
-		
-		Stack del = malloc(sizeof(NodeType));
-		del = *s;
-		*s = (*s)->link;
-		free(del);
-	}
-	
-	if(stopper == 0){
-		Stack tempAssign = malloc(sizeof(NodeType));
-		tempAssign->data = (*s)->data;
-		tempAssign->link = temp;
-		temp = tempAssign;
-		
-	}
-	
-	
-	while(temp != NULL){
-		Stack tempAssign = malloc(sizeof(NodeType));
-		tempAssign->data = temp->data;
-		
-		tempAssign->link = *s;
-		*s = tempAssign;
-		
-		temp = temp->link;
+
+	hold->link = store;
+	store = hold;
+
+	while(!isEmpty(store)){
+		NodePtr loopTemp = store;
+		store = store->link;
+		loopTemp->link = *s;
+		*s = loopTemp;
 	}
 	
 	return true;

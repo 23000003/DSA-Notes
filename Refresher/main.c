@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "Doubly.h"
-#include "Singly.h"
-#include "staticarray.h"
-#include "dynamicarray.h"
+// #include "Doubly.h"
+// #include "Singly.h"
+// #include "staticarray.h"
+#include "./dynamicarray.h"
 
 int main(){
 	
@@ -75,24 +75,24 @@ int main(){
 
 // ==================== Dynamic Array ================= //
 
-//	dArray arr;
-//	arr.count = 0;
-//	arr.max = 3;
-//	arr.arr = malloc(sizeof(int) * arr.max);
-//	
-//	(insertDynamicFront(&arr, 5)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	(insertDynamicRear(&arr, 12)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	(insertDynamicInto(&arr, 400, 4)) ? displayDynamic(arr) : printf("\n\nInto Exceeds\n\n");
-//	(insertDynamicSorted(&arr, 3)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
-//	
-//	printf("\n\nDelete:\n");
-//	(deleteDynamicFront(&arr)) ? displayDynamic(arr) : printf("\n\nArray is Empty\n\n");
-//	(deleteDynamicRear(&arr)) ? displayDynamic(arr) : printf("\n\nArray is Empty\n\n");
-//	(deleteDynamicItem(&arr, 3)) ? displayDynamic(arr) : printf("\n\nArray is Empty or Item Not Found\n\n");
-//	(deleteDynamicOccurence(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Empty or Item Not Found\n\n");
+	dArray arr;
+	arr.count = 0;
+	arr.max = 3;
+	arr.arr = malloc(sizeof(int) * arr.max);
+	
+	(insertDynamicFront(&arr, 5)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	(insertDynamicRear(&arr, 12)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	(insertDynamicFront(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	(insertDynamicInto(&arr, 400, 4)) ? displayDynamic(arr) : printf("\n\nInto Exceeds\n\n");
+	(insertDynamicSorted(&arr, 3)) ? displayDynamic(arr) : printf("\n\nArray is Full\n\n");
+	
+	printf("\n\nDelete:\n");
+	(deleteDynamicFront(&arr)) ? displayDynamic(arr) : printf("\n\nArray is Empty\n\n");
+	(deleteDynamicRear(&arr)) ? displayDynamic(arr) : printf("\n\nArray is Empty\n\n");
+	(deleteDynamicItem(&arr, 3)) ? displayDynamic(arr) : printf("\n\nArray is Empty or Item Not Found\n\n");
+	(deleteDynamicOccurence(&arr, 2)) ? displayDynamic(arr) : printf("\n\nArray is Empty or Item Not Found\n\n");
 	
 	
 	return 0;

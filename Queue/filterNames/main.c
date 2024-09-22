@@ -2,36 +2,212 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "filterqueue.h"
+#define MAX 10
+
+typedef struct {
+    char fname[30];
+    char lname[30];
+} Name;
+
+typedef struct {
+    Name elems[MAX];
+    int front;
+    int rear;
+} NQueue;
+
+void initNQueue(NQueue *nq);
+bool isEmpty(NQueue nq);
+bool isFull(NQueue nq);
+void displayQueue(NQueue nq);
+int countQueue(NQueue q);
+bool enqueue(NQueue *nq, Name n);
+bool dequeue(NQueue *nq);
+Name createName(char fname[], char lname[]);
+Name front(NQueue nq);
+
+/*Removes the names that matches the filterString to the lastname. 
+  Returns the removed names. Use the concept of adding a sentinel
+  at the end indicating the last item in list as empty strings for
+  fname and lname. If there are no names that will match then the
+  function should return the sentinel.*/
+Name *filterNames(NQueue *nq, char *filterString);
+
+/*Insert soreted base on lastname. Rember to use the property 
+  of the queue but without using the functions (enqueue, dequeue, front)*/
+bool insertSorted(NQueue *nq, Name n);
 
 int main(){
 	
 	NQueue q;
 	initNQueue(&q);
 	
-	enqueue(&q, createName("Kenny", "Maratas"));
-	enqueue(&q, createName("Luke", "Alvar"));
-	enqueue(&q, createName("Joe", "Harry"));
+	enqueue(&q, createName("Kenny", "A"));
+	enqueue(&q, createName("Luke", "B"));
+	enqueue(&q, createName("Joe", "D"));
 	printf("==== Display ====\n");
 	displayQueue(q);
 	
-	Name *x = filterNames(&q, "Maratas");
-	printf("==== Display ====\n");
-	displayQueue(q);
+	// Name *x = filterNames(&q, "Maratas");
+	// printf("==== Display ====\n");
+	// displayQueue(q);
 	
-	int i;
-	printf("==== Filtered ====\n");
-	for(i = 0; strcmp(x[i].lname, " ") != 0; i++){
-		printf("First Name: %s\n", x[i].fname);
-		printf("Last Name: %s\n\n", x[i].lname);
-	}
+	// int i;
+	// printf("==== Filtered ====\n");
+	// for(i = 0; strcmp(x[i].lname, " ") != 0; i++){
+	// 	printf("First Name: %s\n", x[i].fname);
+	// 	printf("Last Name: %s\n\n", x[i].lname);
+	// }
 	
-	printf("==== Display ====\n");
-	displayQueue(q);
+	// printf("==== Display ====\n");
+	// displayQueue(q);
 	
 	printf("==== InsertSorted ====\n");
-	insertSorted(&q, createName("OK?!", "BRUH"));
+	insertSorted(&q, createName("OK?!", "C"));
 	displayQueue(q);
 	
 	return 0;
+}
+
+
+void initNQueue(NQueue *nq){
+	nq->front = 1;
+	nq->rear = 0;
+}
+
+bool isEmpty(NQueue nq){
+	return nq.front == (nq.rear + 1) % MAX;
+}
+
+bool isFull(NQueue nq){
+	return nq.front == (nq.rear + 2) % MAX;
+}
+
+void displayQueue(NQueue nq){
+	
+	while(!isEmpty(nq)){
+		Name x = front(nq);
+		printf("First Name: %s\n", x.fname);
+		printf("Last Name: %s\n\n", x.lname);
+		dequeue(&nq);
+	}
+}
+
+Name createName(char fname[], char lname[]){
+	Name n;
+	strcpy(n.fname, fname);
+	strcpy(n.lname, lname);
+	
+	return n;
+}
+
+bool enqueue(NQueue *nq, Name n){
+	if(isFull(*nq)) return false;
+	
+	nq->rear = (nq->rear + 1) % MAX;
+	nq->elems[nq->rear] = n;
+	
+	return true;
+}
+
+bool dequeue(NQueue *nq){
+	if(isEmpty(*nq)) return false;
+	
+	nq->front = (nq->front + 1) % MAX;
+	return true;
+}
+
+Name front(NQueue nq){
+	return nq.elems[nq.front];
+}
+
+int countQueue(NQueue q){
+	int x = 0;
+	
+	while(!isEmpty(q)){
+		x++;
+		dequeue(&q);
+	}
+	
+	return x + 1;
+}
+
+/*Removes the names that matches the filterString to the lastname. 
+  Returns the removed names. Use the concept of adding a sentinel
+  at the end indicating the last item in list as empty strings for
+  fname and lname. If there are no names that will match then the
+  function should return the sentinel.*/
+Name *filterNames(NQueue *nq, char *filterString){
+	
+	int size = countQueue(*nq);
+	
+	Name *filtered = malloc(sizeof(Name) * size);
+	int count = 0;
+	
+	NQueue temp;
+	initNQueue(&temp);
+	
+	while(!isEmpty(*nq)){
+		Name comp = front(*nq);
+		dequeue(nq);
+		
+		if(strcmp(comp.lname, filterString) == 0){
+			filtered[count++] = comp;
+		}else{
+			enqueue(&temp, comp);
+		}
+	}
+	
+	while(!isEmpty(temp)){
+		enqueue(nq, front(temp));
+		dequeue(&temp);
+	}
+	
+	strcpy(filtered[count].lname, " ");
+	
+	return filtered;
+}
+
+/*Insert soreted base on lastname. Rember to use the property 
+  of the queue but without using the functions (enqueue, dequeue, front)*/
+bool insertSorted(NQueue *nq, Name n){
+	
+	if(isFull(*nq)) return false;
+	
+	if(isEmpty(*nq)){
+		nq->rear = (nq->rear + 1) % MAX;
+		nq->elems[nq->rear] = n;
+		return true;
+	}
+	
+	NQueue temp;
+	initNQueue(&temp);
+
+	int stopper = 1;
+
+	while(!isEmpty(*nq)){
+
+		if(strcmp(nq->elems[nq->front].lname, n.lname) > 0 && stopper == 1){
+			temp.rear = (temp.rear + 1) % MAX;
+			temp.elems[temp.rear] = n;
+			stopper = 0;
+		}else{
+			temp.rear = (temp.rear + 1) % MAX;
+			temp.elems[temp.rear] = nq->elems[nq->front];
+			nq->front = (nq->front + 1) % MAX;
+		}
+
+	}
+
+	if(stopper == 1){
+		temp.rear = (temp.rear + 1) % MAX;
+		temp.elems[temp.rear] = n;
+	}
+
+	while(!isEmpty(temp)){
+		nq->rear = (nq->rear + 1) % MAX;
+		nq->elems[nq->rear] = front(temp);
+		temp.front = (temp.front + 1) % MAX;
+	}
+
+	return true;
 }

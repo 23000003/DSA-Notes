@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include "dynamicarray.h"
+
+#include "./dynamicarray.h"
 
 bool insertDynamicFront(dArray *arr, int val){
 	

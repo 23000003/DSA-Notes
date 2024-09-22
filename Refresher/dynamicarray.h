@@ -1,6 +1,10 @@
 #ifndef DYNAMICARRAY_H
 #define DYNAMICARRAY_H
 
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
 typedef struct{
 	int *arr;
 	int max;

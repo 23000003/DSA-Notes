@@ -7,18 +7,16 @@
 int main(){
 	
 	Queue myQ = createQueue();
-	(dequeue(&myQ)) ? printf("Success") : printf("Empty");
-	(enqueue(&myQ, createData(23000003, createName("Kenny", "Maratas"), "BSIT", 'M'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	(enqueue(&myQ, createData(32167867, createName("Joe", "Harry"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	visualize(myQ);
-//	(dequeue(&myQ)) ? printf("\n\nSuccess\n\n") : printf("Empty");
-	(enqueue(&myQ, createData(5436547, createName("WAWA", "Rry"), "BSCS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	(enqueue(&myQ, createData(7542134, createName("LWAO", "way"), "BSIS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	(enqueue(&myQ, createData(6455324, createName("<WADO", "hrwa"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
-	(enqueue(&myQ, createData(4213435, createName("TWAE", "Hdwad"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	(enqueue(&myQ, createData(23000003, createName("Kenny", "B"), "BSIT", 'M'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	(enqueue(&myQ, createData(32167867, createName("Joe", "B"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	// (dequeue(&myQ)) ? printf("\n\nSuccess\n\n") : printf("Empty");
+	(enqueue(&myQ, createData(5436547, createName("WAWA", "D"), "BSCS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	(enqueue(&myQ, createData(7542134, createName("LWAO", "E"), "BSIS", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	(enqueue(&myQ, createData(6455324, createName("<WADO", "F"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
+	(enqueue(&myQ, createData(4213435, createName("TWAE", "G"), "BSCE", 'F'))) ? printf("\n\nSuccess\n\n") : printf("Failed");
 	
 	visualize(myQ);
-	(insertSorted(&myQ, createData(123456, createName("Check", "ZAImmm"), "BSCE", 'F'))) ? visualize(myQ) : printf("Failed");
+	(insertSorted(&myQ, createData(123456, createName("Check", "C"), "BSCE", 'F'))) ? visualize(myQ) : printf("Failed");
 	
 	Name *studs = getStudent(myQ, " ", 'F');
 	int i = 0;
@@ -43,7 +41,7 @@ Queue createQueue(){
 }
 
 bool isEmpty(Queue q){
-	return (q.head && q.tail) == NULL;
+	return q.head == NULL && q.tail == NULL;
 }
 
 Name createName(char fname[], char lname[]){
@@ -95,7 +93,7 @@ bool dequeue(Queue *q){
 }
 
 Data front(Queue q){
-	
+	return q.head->elem;
 }
 
 void display(Queue q){ // dont traverse, 
@@ -134,41 +132,44 @@ void visualize(Queue q){
 // create a duplicate queue function
 
 Queue createDuplicateQueue(Queue q){
-	Queue myDupli = q;
+	Queue myDupli;
+	initQueue(&myDupli);
+
+	NodePtr temp = q.head;
+
+	while(temp != NULL){
+		enqueue(&myDupli, temp->elem);
+		temp = temp->link;
+	}
+
 	return myDupli;
 }
 
 
 Name *getStudent(Queue q, char *program, char sex){
 	
-	Queue myDupli = q; // save the queue
+	Queue myDupli = createDuplicateQueue(q); // save the queue
 	Name *studs = malloc(sizeof(Name) * 20);
 	int i = 0;
 	
-	if(strcmp(program, " ") == 0){
-		while(myDupli.head != NULL){
+	while(myDupli.head != NULL){
+		if(strcmp(program, " ") == 0){
 			if(myDupli.head->elem.sex == sex){
 				studs[i] = myDupli.head->elem.studName;	
 				i++;
-			}
-			dequeue(&myDupli);
-		}
-	}else if(sex == ' '){
-		while(myDupli.head != NULL){
+			}			
+		}else if(sex == ' '){
 			if(strcmp(myDupli.head->elem.program, program) == 0){
 				studs[i] = myDupli.head->elem.studName;	
 				i++;
 			}
-			dequeue(&myDupli);
-		}
-	}else{
-		while(myDupli.head != NULL){
+		}else{
 			if(strcmp(myDupli.head->elem.program, program) == 0 && myDupli.head->elem.sex == sex){
 				studs[i] = myDupli.head->elem.studName;	
 				i++;
-			}
-			dequeue(&myDupli);
+			}			
 		}
+		dequeue(&myDupli);
 	}
 
 	strcpy(studs[i].fname, " ");
@@ -180,23 +181,39 @@ Name *getStudent(Queue q, char *program, char sex){
 // insert the Data d based on lastname only 
 bool insertSorted(Queue *q, Data d){
 	
-	Queue temp = createQueue();
-	int compareStopper = 0;
-	//compare stopper to stop the inserting when condition is true;
-	while(q->head != NULL){
-		if(strcmp(q->head->elem.studName.lname, d.studName.lname) > 0 && compareStopper == 0){
-			enqueue(&temp, d);
-			compareStopper = 1;	
+	if(isEmpty(*q)){
+		enqueue(q, d);
+		return true;
+	}
+	
+	Queue temp;
+	initQueue(&temp);
+
+	NodePtr store = malloc(sizeof(NodeType));
+	store->elem = d;
+	store->link = NULL;
+
+	while(q->head != NULL && strcmp(q->head->elem.studName.lname, d.studName.lname) < 0){
+		NodePtr loopTemp = q->head;
+		q->head = q->head->link;
+		if(temp.head == NULL){
+			temp.head = loopTemp;
 		}else{
-			enqueue(&temp, q->head->elem);
+			temp.tail->link = loopTemp;
 		}
-		dequeue(q);
+		temp.tail = loopTemp;
 	}
 	
-	while(temp.head != NULL){
-		enqueue(q, temp.head->elem);
-		dequeue(&temp);
+	// if while loop didnt trigger //
+	if(isEmpty(temp)){
+		temp.head = store;
+		temp.tail = store;
+	}else{
+		temp.tail->link = store;
 	}
-	
+
+	store->link = q->head;
+	q->head = temp.head;
+
 	return true;
 }

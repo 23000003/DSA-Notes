@@ -4,17 +4,6 @@
 #include <string.h>
 #include "filterqueue.h"
 
-//typedef struct {
-//    char fname[30];
-//    char lname[30];
-//} Name;
-//
-//typedef struct {
-//    Name elems[MAX];
-//    int front;
-//    int rear;
-//} NQueue;
-
 void initNQueue(NQueue *nq){
 	nq->front = 1;
 	nq->rear = 0;
@@ -127,38 +116,43 @@ bool insertSorted(NQueue *nq, Name n){
 	
 	NQueue temp;
 	initNQueue(&temp);
-	int stopper = 0;
+
+	int stopper = 1;
+
 	while(!isEmpty(*nq)){
-		
-		temp.rear = (temp.rear + 1) % MAX;
-		
-		if(strcmp(nq->elems[nq->front].lname, n.lname) > 0 && stopper == 0){
-			temp.elems[temp.rear] = n;
+
+		if(strcmp(nq->elems[nq->front].lname, n.lname) > 0 && stopper == 1){
 			temp.rear = (temp.rear + 1) % MAX;
-			stopper = 1;
+			temp.elems[temp.rear] = n;
+			stopper = 0;
+		}else{
+			temp.rear = (temp.rear + 1) % MAX;
+			temp.elems[temp.rear] = nq->elems[nq->front];
+			nq->front = (nq->front + 1) % MAX;
 		}
-		
-		temp.elems[temp.rear] = nq->elems[nq->front];
-		nq->front = (nq->front + 1) % MAX;
 	}
-	
-	if(stopper == 0){
-		temp.rear = (temp.rear + 1) % MAX;
-		temp.elems[temp.rear] = n;
-	}
-	
+
 	while(!isEmpty(temp)){
-		nq->rear = (nq->rear + 1) % MAX;
-		nq->elems[nq->rear] = temp.elems[temp.front];
-		temp.front = (temp.front + 1) % MAX;
+		Name x = front(temp);
+		enqueue(nq, x);
+		dequeue(&temp);
 	}
-	
+
 	return true;
 }
 
 
 
-
+//typedef struct {
+//    char fname[30];
+//    char lname[30];
+//} Name;
+//
+//typedef struct {
+//    Name elems[MAX];
+//    int front;
+//    int rear;
+//} NQueue;
 
 
 
