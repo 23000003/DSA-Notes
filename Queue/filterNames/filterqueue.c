@@ -130,29 +130,22 @@ bool insertSorted(NQueue *nq, Name n){
 			temp.elems[temp.rear] = nq->elems[nq->front];
 			nq->front = (nq->front + 1) % MAX;
 		}
+
+	}
+
+	if(stopper == 1){
+		temp.rear = (temp.rear + 1) % MAX;
+		temp.elems[temp.rear] = n;
 	}
 
 	while(!isEmpty(temp)){
-		Name x = front(temp);
-		enqueue(nq, x);
-		dequeue(&temp);
+		nq->rear = (nq->rear + 1) % MAX;
+		nq->elems[nq->rear] = front(temp);
+		temp.front = (temp.front + 1) % MAX;
 	}
 
 	return true;
 }
-
-
-
-//typedef struct {
-//    char fname[30];
-//    char lname[30];
-//} Name;
-//
-//typedef struct {
-//    Name elems[MAX];
-//    int front;
-//    int rear;
-//} NQueue;
 
 
 
