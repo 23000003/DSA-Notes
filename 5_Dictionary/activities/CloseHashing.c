@@ -89,7 +89,7 @@ void initDictionary(StudDictionary *dic){
 	}
 }
 
-void reallocDic(StudDictionary *dic){
+void reallocDic(StudDictionary *dic){ // mali, use rehashing since size is already changed
 	
 	Student temp[dic->max];
 	int i, tempMax = dic->max;
