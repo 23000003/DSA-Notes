@@ -21,7 +21,7 @@ typedef struct {
 } StudDictionary;
 
 
-int getHash(Student stud);
+int getHash(Student stud, int max);
 void initDictionary(StudDictionary *dic);
 bool insert(StudDictionary *dic, Student stud);
 bool removeDic(StudDictionary *dic, Student stud);
@@ -65,7 +65,7 @@ int main(){
 }
 
 // ID from student add the position(index) of the bits ex. 1101 => gets 8 % Modulo
-int getHash(Student stud){
+int getHash(Student stud, int max){
 	
 	int i, count = 0;
 	for (i = 1; stud.studID > 0; i++, stud.studID = stud.studID >> 1){ 
@@ -74,7 +74,7 @@ int getHash(Student stud){
 	    }
 	}
 		
-	return count % MAX;
+	return count % max;
 }
 
 void initDictionary(StudDictionary *dic){
@@ -110,9 +110,9 @@ void reallocDic(StudDictionary *dic){ // mali, use rehashing since size is alrea
 }
 
 bool insert(StudDictionary *dic, Student stud){
-	int hash = getHash(stud);
+	int hash = getHash(stud, dic->max);
 	
-	if(dic->count == (dic->max * 0.80)){
+	if(dic->count >= (dic->max * 0.80)){
 		reallocDic(dic);	
 	} 
 	
@@ -124,8 +124,7 @@ bool insert(StudDictionary *dic, Student stud){
 				printf("ID already Exists\n\n");
 				return false;
 			}
-			if(hash == dic->max){
-				// hash = 0;
+			if(hash >= (dic->max * 0.80)){
 				reallocDic(dic);
 			}
 		}
@@ -138,7 +137,7 @@ bool insert(StudDictionary *dic, Student stud){
 }
 
 bool removeDic(StudDictionary *dic, Student stud){
-	int hash = getHash(stud);
+	int hash = getHash(stud, dic->max);
 	
 	if(dic->data[hash].studID == 0) return false;
 	
