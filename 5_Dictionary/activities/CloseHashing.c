@@ -6,6 +6,11 @@
 
 // Default packing density 80%
 
+typedef enum {
+	EMPTY = 0, 
+	DELETED = 1
+}Boolean;
+
 typedef struct{
 	int studID;
 	char studName[16];
@@ -60,7 +65,7 @@ int main(){
 	visualize(x);
 	
 	removeDic(&x, s11);
-	visualize(x);
+	// visualize(x);
 	return 0;
 }
 
@@ -89,43 +94,43 @@ void initDictionary(StudDictionary *dic){
 	}
 }
 
-void reallocDic(StudDictionary *dic){ // mali, use rehashing since size is already changed
+void reallocDic(StudDictionary *dic){
 	
-	Student temp[dic->max];
+	Student temp[dic->max]; // can be a pointer pointing to dic->data
 	int i, tempMax = dic->max;
 	
-	for(i = 0; i < tempMax; i++){
+	for(i = 0; i < dic->max; i++){
 		temp[i] = dic->data[i];
 	}
-	
+
 	dic->data = realloc(dic->data, sizeof(Student) * (dic->max += dic->max));
-	
+	dic->count = 0;
+
 	for(i = 0; i < dic->max; i++){
-		if(i < tempMax){
-			dic->data[i] = temp[i];
-		}else{
-			dic->data[i].studID = 0;
-		}
+		dic->data[i].studID = 0;
+	}
+
+	for(i = 0; i < tempMax; i++){
+		insert(dic, temp[i]);
 	} 
 }
+
 
 bool insert(StudDictionary *dic, Student stud){
 	int hash = getHash(stud, dic->max);
 	
 	if(dic->count >= (dic->max * 0.80)){
-		reallocDic(dic);	
-	} 
+		reallocDic(dic);
+		printf("HEY");
+	}	
 	
 	if(dic->data[hash].studID == 0){
 		dic->data[hash] = stud;
 	}else{
-		while(dic->data[hash].studID != 0){
-			if(dic->data[hash++].studID == stud.studID){
+		for( ; dic->data[hash].studID != 0; hash = (hash + 1) % dic->max){
+			if(dic->data[hash].studID == stud.studID){
 				printf("ID already Exists\n\n");
 				return false;
-			}
-			if(hash >= (dic->max * 0.80)){
-				reallocDic(dic);
 			}
 		}
 		dic->data[hash] = stud;
@@ -141,7 +146,7 @@ bool removeDic(StudDictionary *dic, Student stud){
 	
 	if(dic->data[hash].studID == 0) return false;
 	
-	while(dic->data[hash].studID != stud.studID){
+	for(; dic->data[hash].studID != stud.studID; hash = (hash + 1) % dic->max){
 		if(dic->data[hash++].studID == 0){
 			return false;
 		}
