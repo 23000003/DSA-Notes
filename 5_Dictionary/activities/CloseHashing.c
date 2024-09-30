@@ -8,7 +8,7 @@
 
 typedef enum {
 	EMPTY = 0, 
-	DELETED = 1
+	DELETED = -1
 }Boolean;
 
 typedef struct{
@@ -62,10 +62,10 @@ int main(){
 	removeDic(&x, s9);
 	Student s11 = {211, "Kenny", "BSIT", true, 2};
 	insert(&x, s11);
-	visualize(x);
+	// visualize(x);
 	
 	removeDic(&x, s11);
-	// visualize(x);
+	visualize(x);
 	return 0;
 }
 
@@ -107,7 +107,7 @@ void reallocDic(StudDictionary *dic){
 	dic->count = 0;
 
 	for(i = 0; i < dic->max; i++){
-		dic->data[i].studID = 0;
+		dic->data[i].studID = EMPTY;
 	}
 
 	for(i = 0; i < tempMax; i++){
@@ -124,10 +124,10 @@ bool insert(StudDictionary *dic, Student stud){
 		printf("HEY");
 	}	
 	
-	if(dic->data[hash].studID == 0){
+	if(dic->data[hash].studID == EMPTY){
 		dic->data[hash] = stud;
 	}else{
-		for( ; dic->data[hash].studID != 0; hash = (hash + 1) % dic->max){
+		for( ; dic->data[hash].studID != EMPTY; hash = (hash + 1) % dic->max){
 			if(dic->data[hash].studID == stud.studID){
 				printf("ID already Exists\n\n");
 				return false;
@@ -144,15 +144,15 @@ bool insert(StudDictionary *dic, Student stud){
 bool removeDic(StudDictionary *dic, Student stud){
 	int hash = getHash(stud, dic->max);
 	
-	if(dic->data[hash].studID == 0) return false;
+	if(dic->data[hash].studID == EMPTY) return false;
 	
 	for(; dic->data[hash].studID != stud.studID; hash = (hash + 1) % dic->max){
-		if(dic->data[hash++].studID == 0){
+		if(dic->data[hash++].studID == EMPTY){
 			return false;
 		}
 	}
 	dic->count--;
-	dic->data[hash].studID = -1;
+	dic->data[hash].studID = DELETED;
 }
 
 Student getStud(Student dic){
@@ -164,7 +164,7 @@ void visualize(StudDictionary dic){
 	int dens = dic.max * 0.80;
 	printf("=== In Density ===\n");
 	for(i = 0; i < dens; i++){
-		if(dic.data[i].studID != 0 && dic.data[i].studID != -1){
+		if(dic.data[i].studID != EMPTY && dic.data[i].studID != DELETED){
 			printf("[%d]: \n",i);
 			Student s = getStud(dic.data[i]);
 			printf("ID: %d\n",s.studID);
@@ -173,7 +173,7 @@ void visualize(StudDictionary dic){
 			printf("Sex: %s\n", s.sex ? "Male" : "Female");
 			printf("Level: %d\n\n", s.level);
 		}else{
-			printf("[%d]: %s\n\n", i, dic.data[i].studID == 0 ? "Empty" : "Deleted");
+			printf("[%d]: %s\n\n", i, dic.data[i].studID == EMPTY ? "Empty" : "Deleted");
 		}
 	}
 		
