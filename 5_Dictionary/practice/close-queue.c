@@ -57,7 +57,146 @@ void initDict(Dictionary *dic);
 bool insert(Dictionary *dic, Product p);
 bool delete(Dictionary *dic, Product p);
 bool resizeDict(Dictionary *dic);
+void displayDic(Dictionary d);
 
 //Functions
 Queue ExpiredProducts(Dictionary *dic, Date date, int key);
 int compareDate(Date d1, Date d2);
+
+
+int main(){
+
+}
+
+Queue createQueue(){
+    Queue q;
+    initQueue(&q);
+    return q;
+}
+
+void initQueue(Queue *q){
+    q->back = 0;
+    q->front = 1;
+    q->prods = malloc(sizeof(Product) * MAX);
+}
+
+bool enqueue(Queue *q, Product p){
+    if(isFull(*q)) return false;
+
+    q->back = (q->back + 1) % MAX;
+    q->prods[q->back] = p;
+
+    return true;
+}
+
+bool dequeue(Queue *q){
+    if(isEmpty(*q)) return false;
+
+    q->front = (q->front + 1) % MAX;
+
+    return true;
+}
+
+bool isEmpty(Queue q){
+    return q.front == (q.back + 1) % MAX;
+}
+
+bool isFull(Queue q){
+    return q.front == (q.back + 2) % MAX;
+}
+
+void display(Queue q){
+    
+    printf("Product in the queue: \n");
+    while(!isEmpty(q)){
+        printf("ID: %d\n",q.prods[q.front].prodID);
+        printf("Name: %s\n",q.prods[q.front].prodName);
+        printf("Expiry: %d/%d/%d\n",q.prods[q.front].expiry.day, q.prods[q.front].expiry.month, q.prods[q.front].expiry.year);
+        printf("Production: %d/%d/%d\n",q.prods[q.front].production.day, q.prods[q.front].production.month, q.prods[q.front].production.year);
+    }
+
+    printf("\n");
+}
+
+//Dictionary
+int getHash(int id){
+    int getIndex = 1, temp = id;
+    for(int i = 1; temp > 0; temp >>= 1){
+        if(temp & 1){
+            getIndex *= i;
+        }
+    }
+
+    getIndex |= id;
+
+    return getIndex % MAX;
+}
+void initDict(Dictionary *dic){
+    dic->count = 0;
+    dic->dict = malloc(sizeof(Queue) * MAX);
+    dic->max = MAX;
+
+    for(int i = 0; i < MAX; i++){
+        initQueue(&(dic->dict[i]));    
+    }
+}
+
+bool insert(Dictionary *dic, Product p){
+    int hash = getHash(p.prodID);
+
+    if(isEmpty(dic->dict[hash])){
+        dic->dict[hash].back = (dic->dict[hash].back + 1) % MAX;
+        dic->dict[hash].prods[dic->dict[hash].back] = p;
+    }else{
+        Queue *temp = (&dic->dict[hash]);
+        Queue store;
+        initQueue(&store);
+        int stopper = 0;
+        while(temp->front != (temp->back + 1) % MAX){
+            store.back = (store.back + 1) % MAX;
+            if(temp->prods[temp->front].prodID < p.prodID && stopper == 0){
+                store.prods[store.back] = p;
+                stopper = 1;
+            }else{
+                store.prods[store.back] = temp->prods[temp->back];
+                temp->front = (temp->front + 1) % MAX;
+            }
+        }
+
+        if(stopper == 0){
+            store.back = (store.back + 1) % MAX;
+            store.prods[store.back] = p;
+        }
+
+        dic->dict[hash] = store;
+    }
+}
+
+void displayDic(Dictionary d){
+    printf("Dictionary: \n");
+    for(int i = 0; i < d.max; i++){
+        printf("[%d]: \n");
+        if(!isEmpty(d.dict[i])){
+            display(d.dict[i]);
+        }
+    }
+}
+
+bool delete(Dictionary *dic, Product p){
+
+}
+
+bool resizeDict(Dictionary *dic){
+
+}
+
+//Functions
+Queue ExpiredProducts(Dictionary *dic, Date date, int key){
+
+}
+
+int compareDate(Date d1, Date d2){
+
+}
+
+

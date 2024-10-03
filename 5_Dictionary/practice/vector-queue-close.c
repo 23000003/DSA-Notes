@@ -36,7 +36,7 @@ typedef enum {EMPTY = 0, DELETED = 1}Boolean;
 
 typedef struct{
     int status;
-    char nationality[MAX];
+    int nationality;
     int enrollmentStatus;
     int gender;
     char yearLevel[MAX];
@@ -176,15 +176,45 @@ StudName createStudent(int id, char *fName, char mi, char *lName){
  * how to get generateInfo? => from "studName id" (why?, because it automatically truncates to % 256 since its unsigned char)
  */
 
+
 StudInfo createInfo(int studID){
     StudInfo s;
 
     GenerateInfo info = studID;
 
-    // int value = 0;
-    // for(int i = 1; info > 0; info >>= 1){
-    //     value += info 
-    // }
+    int bits = info & 3;
+    info >>= 2;
+    if(bits == 3){
+        strcpy(s.program, "MATH");
+    }else if(bits == 2){
+        strcpy(s.program, "IS");
+    }else if(bits == 1){
+        strcpy(s.program, "IT");
+    }else{
+        strcpy(s.program, "CS");
+    }
+
+    bits = info & 3;
+    info >>= 2;
+    
+    if(bits == 3){
+        strcpy(s.yearLevel, "4th");
+    }else if(bits == 2){
+        strcpy(s.yearLevel, "3rd");
+    }else if(bits == 1){
+        strcpy(s.program, "2nd");
+    }else{
+        strcpy(s.program, "1st");
+    }
+    s.gender = info & 2; 
+    info >>= 1;
+    s.enrollmentStatus = info & 1;
+    info >>= 1;
+    s.nationality = info & 1;
+    info >>= 1;
+    s.status = info & 1;
+
+    return s;
 }
 
 //Dictionary
@@ -252,7 +282,13 @@ bool insertDic(PersonDict *dic, StudName st){
 }
 
 bool removeDic(PersonDict *dic, StudName st){
+    int hash = getHash(st.id);
 
+    if(dic[hash]->head != NULL) return false;
+
+    NodePtr temp = &(dic[hash]->head);
+
+    while(temp->stud.id != st.id)
 }
 
 //For Closed Hashing
