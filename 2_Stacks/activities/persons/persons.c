@@ -204,21 +204,26 @@ void sortStack(Stack *s, bool flag){
 	Stack temp; 
 	initStack(&temp);
 	
-    while (!isEmpty(*s)) {
-        Person p = peek(*s);
-        pop(s);
-		
-		// flag condition in the while to avoid infinity loop
-        while (!isEmpty(temp) &&
-               ((flag && strcmp(p.name, temp->data.name) < 0) ||  // Ascending order
-                (!flag && strcmp(p.name,  temp->data.name) > 0))) { // Descending order
-            push(s, peek(temp));
-            pop(&temp);
+	while(!isEmpty(*s)){
+	    Person p = (*s)->data;
+
+	    NodePtr transfer = *s;
+	    *s = (*s)->link;        
+	    transfer->link = NULL;
+
+	    
+	    while(!isEmpty(temp) && 
+	            ((flag && strcmp(p.name, temp->data.name) < 0) ||  // Ascending order
+                (!flag && strcmp(p.name,  temp->data.name) > 0))) { // Descending order)
+            NodePtr hold = temp;
+            temp = temp->link;
+            hold->link = *s;
+            *s = hold;
+            
         }
-        
-		//if the inner while loop is done means it doesn't have any greater/lesser element then push it to the temp
-        push(&temp, p);
-    }
+        transfer->link = temp;
+        temp = transfer;
+	}
 	
 	while(!isEmpty(temp)){
 		push(s, peek(temp));
@@ -226,7 +231,6 @@ void sortStack(Stack *s, bool flag){
 	}
 
 }
-
 
 
 

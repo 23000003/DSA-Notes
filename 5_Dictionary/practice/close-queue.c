@@ -59,13 +59,39 @@ bool delete(Dictionary *dic, Product p);
 bool resizeDict(Dictionary *dic);
 void displayDic(Dictionary d);
 
+Product createProduct(int prodID, char *prodName, Date exp, Date prod);
+Date createDate(int month, int day, int year);
+
 //Functions
 Queue ExpiredProducts(Dictionary *dic, Date date, int key);
 int compareDate(Date d1, Date d2);
 
 
 int main(){
+    Dictionary d;
+    initDict(&d);
 
+    insert(&d, createProduct(100, "Choco", createDate(5, 23, 2027), createDate(5, 23, 2024)));
+    insert(&d, createProduct(101, "Choco", createDate(5, 23, 2027), createDate(5, 23, 2024)));
+
+    displayDic(d);
+}
+
+Product createProduct(int prodID, char *prodName, Date exp, Date prod){
+    Product p;
+    strcpy(p.prodName, prodName);
+    p.prodID = prodID;
+    p.expiry = exp;
+    p.production = prod;
+    return p;
+}
+
+Date createDate(int month, int day, int year){
+    Date d;
+    d.day = day;
+    d.month = month;
+    d.year = year;
+    return d;
 }
 
 Queue createQueue(){
@@ -113,6 +139,7 @@ void display(Queue q){
         printf("Name: %s\n",q.prods[q.front].prodName);
         printf("Expiry: %d/%d/%d\n",q.prods[q.front].expiry.day, q.prods[q.front].expiry.month, q.prods[q.front].expiry.year);
         printf("Production: %d/%d/%d\n",q.prods[q.front].production.day, q.prods[q.front].production.month, q.prods[q.front].production.year);
+        q.front = (q.front + 1) % MAX;
     }
 
     printf("\n");
@@ -154,12 +181,13 @@ bool insert(Dictionary *dic, Product p){
         int stopper = 0;
         while(temp->front != (temp->back + 1) % MAX){
             store.back = (store.back + 1) % MAX;
-            if(temp->prods[temp->front].prodID < p.prodID && stopper == 0){
+            if(temp->prods[temp->front].prodID > p.prodID && stopper == 0){
                 store.prods[store.back] = p;
                 stopper = 1;
             }else{
                 store.prods[store.back] = temp->prods[temp->back];
                 temp->front = (temp->front + 1) % MAX;
+            
             }
         }
 
@@ -175,7 +203,7 @@ bool insert(Dictionary *dic, Product p){
 void displayDic(Dictionary d){
     printf("Dictionary: \n");
     for(int i = 0; i < d.max; i++){
-        printf("[%d]: \n");
+        printf("[%d]: \n", i);
         if(!isEmpty(d.dict[i])){
             display(d.dict[i]);
         }
@@ -183,7 +211,24 @@ void displayDic(Dictionary d){
 }
 
 bool delete(Dictionary *dic, Product p){
+    int hash = getHash(p.prodID);
 
+    if(isEmpty(dic->dict[hash])) return false;
+    
+    Queue *temp = (&dic->dict[hash]);
+    Queue store;
+    initQueue(&store);
+    while(!isEmpty(*temp)){
+        if(temp->prods[temp->front].prodID != p.prodID){
+            store.back = (store.back + 1) % MAX;
+            store.prods[store.back] = temp->prods[temp->front];
+        }
+        temp->front = (temp->front + 1) % MAX;
+    }
+
+    dic->dict[hash] = store;
+
+    return true;
 }
 
 bool resizeDict(Dictionary *dic){
