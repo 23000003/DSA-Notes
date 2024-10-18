@@ -8,10 +8,15 @@ typedef struct node{
     struct node *right;
 } NodeType, *NodePtr, *BST;
 
+typedef struct nodeQ{
+    BST data;
+    struct nodeQ *next;
+}*NodeQPtr;
+
 typedef struct{
-    struct node *front;
-    struct node *rear;
-}*Queue, QueCalloc;
+    NodeQPtr front;
+    NodeQPtr rear;
+}Queue;
 
 void initBST(BST *bst);
 BST newBST();// same ^^
@@ -26,7 +31,6 @@ void InOrder(BST bst);
 void BreadOrder(BST bst);
 
 //Queue
-Queue initQueue();
 bool enqueue(Queue *q, int data);
 bool dequeue(Queue *q);
 
@@ -44,6 +48,9 @@ int main(){
     
     // 13 10 15 4 5 6 7 9 with recursive
     InOrder(bst); // 15 13 10 9 7 6 5 4
+
+    printf("\n");
+    BreadOrder(bst);
     
 }
 
@@ -105,12 +112,6 @@ void InOrder(BST bst){
     }    
 }
 
-Queue initQueue(){
-    Queue q = calloc(1, sizeof(QueCalloc));
-
-    return q;
-}
-
 bool enqueue(Queue *q, int data){
 
     
@@ -118,12 +119,36 @@ bool enqueue(Queue *q, int data){
 }
 
 void BreadOrder(BST bst){
-    Queue q = initQueue();
+    Queue q;
+
+    q.front = NULL;
+    q.rear = NULL;
+
+    NodeQPtr nq = malloc(sizeof(struct nodeQ));
+    nq->data = bst;
+    nq->next = NULL;
+
+    q.front = nq;
+    q.rear = nq;
     
-    while(bst != NULL){
-        
+    while(q.front != NULL){
+        printf("%d ", q.front->data->data);
+        if(q.front->data->left != NULL){
+            nq = calloc(1, sizeof(struct nodeQ));
+            nq->data = q.front->data->left;
+            q.rear->next = nq;
+            q.rear = nq;
+        }
+        if(q.front->data->right != NULL){
+            nq = calloc(1, sizeof(struct nodeQ));
+            nq->data = q.front->data->right;
+            q.rear->next = nq;
+            q.rear = nq;
+        }
+        NodeQPtr del = q.front;
+        q.front = q.front->next;
+        free(del);
     }
-    
 }
 
 
