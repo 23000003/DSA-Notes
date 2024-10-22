@@ -22,7 +22,11 @@ int main(){
     insertMH(&x, 5);
     insertMH(&x, 15);
     insertMH(&x, 4);
+    insertMH(&x, 6);
     
+    deleteMH(&x);
+    deleteMH(&x);
+    deleteMH(&x);
     for(int i = 0; i < x.count; i++){
         printf("%d ", x.elems[i]);
     }
@@ -56,8 +60,26 @@ bool insertMH(MinHeap *x, int val){ // Refactor this
 
 bool deleteMH(MinHeap *x){
     
-    
-    
+    x->count--;
+    int i;
+    for(i = 0; x->elems[x->count] > x->elems[i * 2 + 1] && x->elems[x->count] > x->elems[i * 2 + 2] && i <= x->count; ){
+        if((i * 2 + 2) <= x->count || (i * 2 + 1) <= x->count)
+        {
+            if (x->elems[i * 2 + 1] >= x->elems[i * 2 + 2] && (i * 2 + 2) <= x->count){
+                x->elems[i] = x->elems[i * 2 + 2];
+                i = i * 2 + 2;
+            } else {
+                x->elems[i] = x->elems[i * 2 + 1];
+                i = i * 2 + 1;
+            }
+        }else{
+            break;
+        }
+    }
+    printf("==>>%d\n", i);
+    x->elems[i] = x->elems[x->count];
+
+    return true;
 }
 
 
