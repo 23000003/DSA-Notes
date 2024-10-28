@@ -21,6 +21,7 @@ typedef struct{
 void initBST(BST *bst);
 BST newBST();// same ^^
 bool insertBST(BST *bst, int data);
+bool deleteBST(BST *bst, int data);
 
 // DFS
 void PostOrder(BST bst);
@@ -86,6 +87,23 @@ bool insertBST(BST *bst, int data){
     *bst = insert;
 
     return true;
+}
+
+bool deleteBST(BST *bst, int data){
+    
+    while(*bst != NULL){
+        if((*bst)->data == data){
+            BST temp = *bst;
+            bst = &(*bst)->left;
+            while((*bst)->right != NULL){
+                
+            }
+        }
+        bst = ((*bst)->data < data) ? &(*bst)->right : &(*bst)->left;
+    }
+    
+    
+    
 }
 
 void PostOrder(BST bst){
