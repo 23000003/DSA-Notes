@@ -32,8 +32,7 @@ void removePOT(POT *p);
 void displayFlight(Flight f);
 void InOrder(POT p, int count);
 
-void checkDestPriority(POT p, char *destination);
-void insertToFile(POT p);
+void insertToFile(POT p, int flightCode);
 void readFile();
 
 

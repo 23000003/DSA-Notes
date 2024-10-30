@@ -30,7 +30,11 @@ int main(){
     insertToPOT(&h, createFlight(5001, createFlightDetails("CebuPacific", "ALT", createSchedule(5, 0, 0))));
     insertToPOT(&h, createFlight(5002, createFlightDetails("AirAsia", "AMR", createSchedule(5, 0, 0))));
     
-    InOrder(h, 0);
+    // InOrder(h, 0);
+
+    insertToFile(h, 3001);
+
+    readFile();
 
     return 0;
 }

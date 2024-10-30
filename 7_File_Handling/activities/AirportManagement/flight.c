@@ -71,14 +71,39 @@ void removePOT(POT *p){
 
 }
 
-void checkDestPriority(POT p, char *destination){
+void insertToFile(POT p, int flightCode){
+    FILE *fp;
 
-}
+    fp = fopen("flights.txt", "wb");
 
-void insertToFile(POT p){
+    for(int i = 0; i < p.last; i++){
+        if(fp != NULL){
+            displayFlight(p.flight[i]);
+            if(p.flight[i].flightCode != flightCode){
+                fwrite(&p.flight[i], sizeof(Flight), 1, fp);
+            }else{
+                break;
+            }
+        }
+    }
+
+    fclose(fp);
 
 }
 
 void readFile(){
+    Flight temp;
+
+    FILE *fp;
+
+    fp = fopen("flights.txt", "rb");
+    printf("\n==================\n\n");
+    if(fp != NULL){
+        while(fread(&temp, sizeof(Flight), 1, fp)){
+            displayFlight(temp);
+        }
+    }
+
+    fclose(fp);
 
 }
