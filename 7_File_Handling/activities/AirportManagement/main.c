@@ -39,9 +39,10 @@ int main(){
     }
     // InOrder(h, 0);
 
-    // insertToFile(h, 3001);
+    /** Transfers to flights file if there are flights ongoing before the passed flightID is its turn**/ 
+    insertToFile(h, 3001);
 
-    // readFile();
+    readFile();
 
     return 0;
 }
