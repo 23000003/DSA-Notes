@@ -35,7 +35,7 @@ int main(){
     return 0;
 }
 
-bool insertMH(MinHeap *x, int val){ // Refactor this
+bool insertMH(MinHeap *x, int val){
     
     // int parent = (x->count - 1) / 2;
     
