@@ -3,6 +3,8 @@
 #include <string.h>
 #include "flight.h"
 
+// MINHEAP
+
 int main(){
 
     POT h;
@@ -30,11 +32,16 @@ int main(){
     insertToPOT(&h, createFlight(5001, createFlightDetails("CebuPacific", "ALT", createSchedule(5, 0, 0))));
     insertToPOT(&h, createFlight(5002, createFlightDetails("AirAsia", "AMR", createSchedule(5, 0, 0))));
     
+    removePOT(&h);
+
+    for(int i = 0; i < h.last; i++){
+        displayFlight(h.flight[i]);
+    }
     // InOrder(h, 0);
 
-    insertToFile(h, 3001);
+    // insertToFile(h, 3001);
 
-    readFile();
+    // readFile();
 
     return 0;
 }

@@ -24,10 +24,11 @@ int main(){
     insertMH(&x, 4);
     insertMH(&x, 6);
     
-    deleteMH(&x);
-    deleteMH(&x);
-    deleteMH(&x);
-    for(int i = 0; i < x.count; i++){
+//    deleteMH(&x);
+//    deleteMH(&x);
+//    deleteMH(&x);
+    int i;
+	for(i = 0; i < x.count; i++){
         printf("%d ", x.elems[i]);
     }
     
