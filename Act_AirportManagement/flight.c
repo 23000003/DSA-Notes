@@ -72,8 +72,8 @@ void removePOT(POT *p){
     p->last--;
     int i;
     for(i = 0; 
-        checkTime(p->flight[p->last].flightDets.schedule, p->flight[i * 2 + 1].flightDets.schedule) > 0 && 
-        checkTime(p->flight[p->last].flightDets.schedule, p->flight[i * 2 + 2].flightDets.schedule) > 0 && 
+        (checkTime(p->flight[p->last].flightDets.schedule, p->flight[i * 2 + 1].flightDets.schedule) > 0 || 
+        checkTime(p->flight[p->last].flightDets.schedule, p->flight[i * 2 + 2].flightDets.schedule) > 0 )&& 
         i <= p->last; 
     ){    
         if((i * 2 + 2) <= p->last || (i * 2 + 1) <= p->last)
