@@ -96,12 +96,11 @@ Time findTotalTime(PQ *p){
     Time t = {0, 0, 0};
     int i = 0;
 
-    while(i < 5){
+    while(p->last != 0 && (strcmp(p->elems[0].lane, "main")) != 0 || (strcmp(p->elems[0].direction, "pedestrian") != 0)){
         t.hr += p->elems[0].time.hr;
         t.min += p->elems[0].time.min;
         t.sec += p->elems[0].time.sec;
         deletePQ(p);
-        i++;
     }
 
     return t;
