@@ -17,16 +17,21 @@ int main(){
     MinHeap x;
     x.count = 0;
     
-    insertMH(&x, 12);
-    insertMH(&x, 7);
-    insertMH(&x, 5);
-    insertMH(&x, 15);
-    insertMH(&x, 4);
+    insertMH(&x, 2);
+    insertMH(&x, 8);
+    insertMH(&x, 3);
     insertMH(&x, 6);
+    insertMH(&x, 5);
+    insertMH(&x, 1);
+    insertMH(&x, 4);
+    insertMH(&x, 7);
+
     
-//    deleteMH(&x);
-//    deleteMH(&x);
-//    deleteMH(&x);
+   deleteMH(&x);
+   deleteMH(&x);
+   deleteMH(&x);
+      deleteMH(&x);
+   deleteMH(&x); 
     int i;
 	for(i = 0; i < x.count; i++){
         printf("%d ", x.elems[i]);
@@ -63,7 +68,7 @@ bool deleteMH(MinHeap *x){
     
     x->count--;
     int i;
-    for(i = 0; x->elems[x->count] > x->elems[i * 2 + 1] && x->elems[x->count] > x->elems[i * 2 + 2] && i <= x->count; ){
+    for(i = 0; x->elems[x->count] > x->elems[i * 2 + 1] || x->elems[x->count] > x->elems[i * 2 + 2] && i <= x->count; ){
         if((i * 2 + 2) <= x->count || (i * 2 + 1) <= x->count)
         {
             if (x->elems[i * 2 + 1] >= x->elems[i * 2 + 2] && (i * 2 + 2) <= x->count){
