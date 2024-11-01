@@ -102,8 +102,6 @@ bool deleteBST(BST *bst, int data){
         bst = ((*bst)->data < data) ? &(*bst)->right : &(*bst)->left;
     }
     
-    
-    
 }
 
 void PostOrder(BST bst){
