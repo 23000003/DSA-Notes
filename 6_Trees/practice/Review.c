@@ -4,6 +4,11 @@
 
 #define MAXTREE 20
 
+typedef struct{
+    int elems[MAXTREE];
+    int count;
+}StackOrder;
+
 typedef struct node{
     struct node *left, *right;
     int val;
@@ -24,11 +29,12 @@ void deleteBSTArrItem(BSTArr *a, int item);
 
 void insertBSTLL(BSTLL *b, int val);
 void deleteBSTLL(BSTLL *b); // root
-void deleteBSTLLitem(BSTLL *b, int item);
+void deleteBSTLLitem(BSTLL *b, int item); 
 
-void preOrderArr(BSTArr a);
-void postOrderArr(BSTArr a);
-void inOrderArr(BSTArr a);
+// No using of recursion
+void preOrderArr(BSTArr a, int count);
+void postOrderArr(BSTArr a, int count);
+void inOrderArr(BSTArr a, int count);
 void postOrderLL(BSTLL b);
 void preOrderLL(BSTLL b);
 void inOrderLL(BSTLL b);
@@ -45,11 +51,14 @@ int main(){
     insertPOT(&p, 1);
     insertPOT(&p, 9);
     deletePOT(&p);
-
+ 
     printf("==========================\n");
     for(int i = 0; i < p.last; i++){ // breadorder
         printf("%d ", p.elems[i]);
     }
+
+    printf("\n==========================\n");
+    postOrderArr(p, 0);
 
     // =====================================
 
@@ -179,15 +188,24 @@ void preOrderLL(BSTLL b){
 
 // ===================== 
 
-void inOrderArr(BSTArr a){
+void inOrderArr(BSTArr a, int count){
 
 }
 
-void postOrderArr(BSTArr a){
+void postOrderArr(BSTArr a, int count){
+
+    // if(count < a.last){
+    //     postOrderArr(a, (count * 2) + 1);
+    //     postOrderArr(a, (count * 2) + 2);
+    //     printf("%d ", a.elems[count]);
+    // }
+
+
+
 
 }
 
-void preOrderArr(BSTArr a){
+void preOrderArr(BSTArr a, int count){
 
 }
 
