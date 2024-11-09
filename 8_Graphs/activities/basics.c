@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_CONNECTION 5
+#define MAX_CONNECTION 6
+#define QueueMAX 25
 
 typedef struct{
     char vertex;
     int weight;
 }Edge;
+
+typedef struct{
+    Edge conn[QueueMAX];
+    int rear, front;
+}Queue;
 
 typedef struct node{
     Edge data;
@@ -46,26 +52,39 @@ int main(){
 
     insertEdge(&a, 'A', 'B', 8);
     insertEdge(&a, 'A', 'B', 5);
+    insertEdge(&a, 'A', 'E', 5);
+
     insertEdge(&a, 'B', 'A', 3);
-    insertEdge(&a, 'D', 'A', 3);
+    insertEdge(&a, 'B', 'C', 7);
+    insertEdge(&a, 'B', 'D', 4);
+
+    insertEdge(&a, 'C', 'D', 4);
+    insertEdge(&a, 'C', 'B', 4);
+
+    insertEdge(&a, 'D', 'E', 3);
     insertEdge(&a, 'D', 'B', 1);
-    insertEdge(&a, 'B', 'D', 3);
-    insertEdge(&a, 'A', 'C', 84);
-    insertEdge(&a, 'C', 'D', 3);
-    insertEdge(&a, 'D', 'C', 4);
-    insertEdge(&a, 'E', 'B', 4);
-    insertEdge(&a, 'B', 'E', 4);
-    insertEdge(&a, 'B', 'C', 3);
-    insertEdge(&a, 'C', 'B', 3);
-    insertEdge(&a, 'E', 'C', 3);
-    insertEdge(&a, 'C', 'E', 3);
+    insertEdge(&a, 'D', 'C', 3);
+    insertEdge(&a, 'D', 'F', 3);
+
+    insertEdge(&a, 'E', 'D', 3);
+    insertEdge(&a, 'E', 'F', 3);
+
+    insertEdge(&a, 'F', 'D', 3);
+    insertEdge(&a, 'F', 'E', 3);
+
+    //bug if a vertex doesnt have a connection = infinite loop
 
     display(a);
 
-    int *isVisited = calloc(5, sizeof(int));
+    int *isVisited = calloc(MAX_CONNECTION, sizeof(int));
 
     printf("\nDFS: ");
     dfs(a, 'A', isVisited);
+
+    int *isVisited1 = calloc(MAX_CONNECTION, sizeof(int));
+    printf("\nBFS: ");
+    bfs(a, 'A', isVisited1);
+
 }
 
 
@@ -107,9 +126,39 @@ void display(Graph a){
     }
 }
 
-// Use Queue
+
+
+// Use Queue 
+// ( will ask sir regarding if a vertex (vertexStart) is undirected (no connection) what to do)
 void bfs(Graph a, char vertextStart, int isVisited[]){
-    
+
+    Queue q;
+    q.rear = 0, q.front = 1;
+    int countVisited = 1; // alrdy visits start
+
+    isVisited[vertextStart - 'A'] = 1;
+    printf("%c ", vertextStart);
+
+    while(countVisited < MAX_CONNECTION){
+        Connection trav;
+
+        for(trav = a.arr[vertextStart - 'A']; trav != NULL; trav = trav->link){
+            if(isVisited[trav->data.vertex - 'A'] != 1){
+                q.rear = (q.rear + 1) % QueueMAX;
+                // printf("\nVISITED %d\n", vertextStart - 'A');
+                q.conn[q.rear] = trav->data;
+                isVisited[trav->data.vertex - 'A'] = 1;
+            }
+        }
+        if(((q.rear + 1) % QueueMAX) != q.front){
+            printf("%c ", q.conn[q.front].vertex);
+            vertextStart = q.conn[q.front].vertex;
+            q.front = (q.front + 1) % QueueMAX;
+            countVisited++;
+        }
+
+        // printf(">>%d<<", countVisited);
+    }
 }
 
 // Use Stack (if no recursion)
