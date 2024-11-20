@@ -4,3 +4,8 @@
 
 
 https://cs.slides.com/colt_steele/graphs#/64/0/5
+
+
+### Algorithms:
+- Dijkstra's <br/>
+- FloydWarshall
