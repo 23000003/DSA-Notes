@@ -113,6 +113,48 @@ void display(Graph a){
     }
 }
 
+//djikstra (Determine shortest path of a vertext to a destination)
+void dickstra(Graph a, char vertexStart, char vertexDestination){
+	
+	Connection trav = a.arr[vertexStart - 'A'];
+	
+	Connection store = NULL;
+	Edge x = trav->data;
+	trav = trav->link;
+	printf("%c %c", trav->data.vertex, x.vertex);
+	
+	while(trav != NULL){
+		if(x.weight > trav->data.weight){
+			x = trav->data;
+		}
+		
+		if(trav->link == NULL){
+			if(x.weight != vertexDestination){
+				if(store == NULL){
+					store = trav;
+				}else{
+					Connection *temp = &store;
+					for(; *temp != NULL; temp = &(*temp)->link){}
+					*temp = trav;
+				}
+				trav = a.arr[x.weight - 'A'];
+				printf("TT");
+			}else{
+				printf("TT1");
+				break;
+			}
+		}else{
+//			printf("TT2");
+			trav = trav->link;
+		}
+	}
+	
+	printf("Shortest Path: ");
+	for(; store != NULL; store = store->link){
+		printf("[%c]: %d ->", store->data.vertex, store->data.weight);
+	}
+
+}
 
 
 // Use Queue 
