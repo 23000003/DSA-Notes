@@ -91,16 +91,41 @@ bool insertBST(BST *bst, int data){
 
 bool deleteBST(BST *bst, int data){
     
-    while(*bst != NULL){
-        if((*bst)->data == data){
-            BST temp = *bst;
-            bst = &(*bst)->left;
-            while((*bst)->right != NULL){
-                
-            }
+    
+
+struct Node* delete(struct Node* node, int value) {
+    // Implement me!
+    
+    if(node == NULL) return node;
+    
+    struct Node **temp = &node;
+    
+    for(; *temp != NULL && (*temp)->value != value; temp = ((*temp)->value > value) ? &(*temp)->left : &(*temp)->right){}
+    
+    if(*temp != NULL){
+        
+        struct Node *toDel = NULL;
+        
+        if((*temp)->left != NULL && (*temp)->right != NULL)
+        {
+            
+            struct Node **findRSmall = &(*temp)->right;
+            
+            while((*findRSmall)->left != NULL){ findRSmall = &(*findRSmall)->left; }
+            
+            (*temp)->value = (*findRSmall)->value;
+            *findRSmall = (*findRSmall)->right;
         }
-        bst = ((*bst)->data < data) ? &(*bst)->right : &(*bst)->left;
+        else
+        {
+            struct Node* tempNode = *temp;
+            *temp = (*temp)->left != NULL ? (*temp)->left : (*temp)->right;
+            free(tempNode);                     
+        }
     }
+    
+    
+    return node;
     
 }
 
