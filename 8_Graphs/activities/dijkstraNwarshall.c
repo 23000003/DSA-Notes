@@ -42,7 +42,7 @@ void dfs(Graph a, char vertexStart, int isVisited[]);
 
 
 //djikstra (Determine shortest path of a vertext to a destination)
-void dijkstra(Graph a, char vertexStart, char vertexDestination);
+void dijkstra(Graph a, char vertexStart);
 
 //Warshall (Determine all shortest paths of all vertex's)
 void floyd(Graph a);
@@ -134,55 +134,47 @@ void display(Graph a){
 }
 
 //djikstra (Determine shortest path of a vertext to a destination)
-void dijkstra(Graph a, char vertexStart, char vertexDestination) {
+void dijkstra(Graph a, char vertexStart) {
+    
     int *visited = calloc(MAX_CONNECTION, sizeof(int));
     int *distance = calloc(MAX_CONNECTION, sizeof(int)); // value of the shortest path
-
-    Connection trav = a.arr[vertexStart - 'A'];
-    Connection store = NULL;
+    int *prev = calloc(MAX_CONNECTION, sizeof(int)); // previous vertex
 
     char smallestVertex;
-    int small = 9999999;
-    visited[vertexStart - 'A'] = 1;
-    int pathCost = 0;
 
-    while(1){
-        
-        if(trav != NULL){
-            
+    int current = vertexStart - 'A';
+ 
+    while(checkIsAllVisited(visited)){
+        Connection trav = a.arr[current];
+        visited[current] = 1;
+        int small = 9999999; 
+
+        for(; trav != NULL; trav = trav->link){
+            if(visited[trav->data.vertex - 'A'] == 0){
+                if(distance[trav->data.vertex - 'A'] == 0 || distance[trav->data.vertex - 'A'] > distance[current] + trav->data.weight){
+                    distance[trav->data.vertex - 'A'] = distance[current] + trav->data.weight;
+                    prev[trav->data.vertex - 'A'] = current;
+                }
+            }
         }
-        // if(trav != NULL){
-        //     if(trav->data.weight < small && visited[trav->data.vertex - 'A'] == 0){
-        //         small = trav->data.weight;
-        //         smallestVertex = trav->data.vertex;
-        //     }
 
-        //     if(trav->data.vertex == vertexDestination){
-        //         pathCost += trav->data.weight;
-        //         visited[trav->data.vertex - 'A'] = 1;
-        //         break;
-        //     }
+        for(int i = 0; i < MAX_CONNECTION; i++){
+            if(visited[i] == 0 && distance[i] < small && distance[i] != 0){
+                small = distance[i];
+                smallestVertex = i + 'A';
+            }
+        }
 
-        //     trav = trav->link;
-        // }else{
-        //     pathCost += small;
-        //     small = 9999999;
-        //     visited[smallestVertex - 'A'] = 1;
-        //     // distance[smallestVertex - 'A'] = small;
-        //     trav = a.arr[smallestVertex - 'A'];
-        // }
-    
+        current = smallestVertex - 'A';
+
     }
 
 
-    printf("Shortest Path: ");
-    for(int i = 0; i < MAX_CONNECTION; i++){
-        if(visited[i] == 1){
-            printf("%c -> ", i + 'A');
-        }
+    printf("\nShortest Path:\n");
+    for(int i = 0; i < MAX_CONNECTION; i++){   
+        printf("%c -> %d: prev -> %c\n", i + 'A', distance[i], prev[i] + 'A');
     }
 
-    printf("Cost: %d", pathCost);
 }
 
 
